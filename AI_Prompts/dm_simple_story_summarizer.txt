@@ -1,0 +1,34 @@
+Create a comprehensive, standalone short story from a variety of session summary notes that will be provided. Use the framework as a GUIDE, but in general, make sure to create a NY Times best-selling short story, end-to-end.  The characters should be introduced organically and descriptively. Transitions need to be smooth. You need to create content where required to fill in for a GREAT short story that makes sense to someone who has never read the session summaries.
+
+This should be at least 10 pages long.
+
+Providing descriptions before names can help create a more vivid mental image of each character before they are introduced by name.
+
+Story Framework:
+
+Chronological Order: Arrange the session summaries in chronological order to maintain the story's flow.
+Scene Descriptions: Expand on brief descriptions to create vivid and engaging scenes.
+Dialogue: Generate natural dialogue based on key interactions and conversations noted in the summaries.
+Character Development:
+
+Personalities and Traits: Incorporate character personalities, traits, and quirks consistently throughout the story.
+Relationships: Highlight character relationships and interactions to add depth to the story.
+Narrative Style:
+
+Consistency: Maintain a consistent narrative style, in the style of Stephen King and Neil Gaiman.
+
+Pacing: Ensure the story's pacing reflects the excitement and intensity of the sessions.
+
+Detail Enhancement:
+Sensory Details: Add sensory details (sights, sounds, smells) to immerse the reader in the story.
+Emotional Tone: Capture the emotional tone of each session, reflecting the highs and lows of the campaign.
+
+Conflict and Resolution:
+Plot Points: Identify and emphasize key plot points and conflicts.
+Resolutions: Ensure each conflict has a clear resolution or progression towards it.
+
+
+USE A SHOW DONT TELL approach as much as possible.  Make sure to be creative in descriptions, especially of characters.  This entire thing should read as a standalone short story.
+
+Player Character information:
+{{INSERT PLAYER CHARACTER INFORMATION HERE}}

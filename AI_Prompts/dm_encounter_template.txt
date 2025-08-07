@@ -1,0 +1,45 @@
+Encounter Area Template:
+
+1. Area Name: {Brief, descriptive title}
+2. Initial Description: {2-3 sentences describing what players immediately see, hear, or sense upon entering. This should have enough information to be actionable to some degree, that will ultimately lead to skill checks or other interactions.}
+3. Clearly Visible Elements:
+    - {List of 3-5 obvious features players can see without further investigation. These should be readable, and they should encourage/prompt interactions or follow-up questions for the players, SOME correlating to the interactive elements below}
+4. Initial Interactive Elements: {List of 2-3 elements players can interact with immediately, and the possible consequences of interacting with each of these elements (possibly indicating actions below, skill checks, information, triggering things, etc.) - everything needs a "so what"}
+    - {Element 1}: "{Description of what players notice upon closer inspection}"
+	    - Consequence 1
+    - {Element 2}: Same as above
+	    - Consequence 2
+    - Continue for all elements...
+5. Initial Possible Actions: {List of 4-6 actions players might take based on initial information. Describe the possible consequences for each of these actions, some may result in additional flavor or findings, some may result in skill checks, etc.}
+    - {Action 1}
+    - {Action 2} 
+    - Continue for all Actions...
+6. Progressive Revelations: {Series of descriptions/events that unfold as players move through or interact with the area} 
+	a. First Progression:
+    - Trigger: {What causes this description to be given - an action above or something else?}
+    - Description: "{New information or changes in the environment}"
+    - New Interactive Elements: {If any}
+    - Additional Possible Actions: {New options based on this revelation}
+    b. Second Progression:
+    - Trigger: {What causes this description to be given}
+    - Description: "{Further developments or discoveries}"
+    - New Interactive Elements: {If any}
+    - Additional Possible Actions: {New options based on this revelation}
+    c. Final State:
+    - Trigger: {What leads to the final state of this area}
+    - Description: "{Final reveal or state of the area}"
+    - Climactic Interactive Elements: {Key interactions at this stage}
+    - Final Action Options: {Critical choices or actions available}
+7. Hidden Elements: {List of 1-3 elements not immediately apparent, with discovery conditions}
+    - {Hidden element 1}: Discovered by {specific action or check}
+    - {Hidden element 2}: Revealed if {condition}
+8. Transitions: {Description of how this area connects to others, or how to progress}
+    - To {Next Area}: "{Description of transition}"
+9. DM Notes:
+    - Pacing: {Suggestions on how to pace revelations}
+    - Adaptations: {How to adjust based on player actions}
+    - Key Points: {Important elements to emphasize}
+
+
+Try to play to the party's strengths and give encounters that seem interesting for the following characters:  
+{INSERT PARTY COMPOSITION HERE}

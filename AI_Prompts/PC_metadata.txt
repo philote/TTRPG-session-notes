@@ -1,0 +1,87 @@
+
+Players:
+{{List Players Here}}
+
+
+Please fill out this template for the attached session transcript:
+
+# D&D Session Analysis Template
+
+## Players
+[List all player names here]
+
+## Performance and Engagement Metrics
+1. Roleplaying (Character Consistency and Depth)
+2. Creativity and Problem Solving
+3. Team Interaction and Support
+4. Engagement with Story and Setting
+5. Humor and Entertainment Value
+6. Clarity and Eloquence in Communication
+7. Initiative and Proactivity
+
+## Differential Analysis Table
+Please create a DIFFERENTIAL ANALYSIS TABLE for each performance and engagement category.  The key here is to rank every player from 1-7, no repeats, for every category. This will help characters see where they are at and where they can improve.
+
+
+| Player | Roleplaying | Creativity | Team Interaction | Story Engagement | Humor | Communication | Initiative |
+|--------|-------------|------------|------------------|------------------|-------|---------------|------------|
+| [Player 1] |  |  |  |  |  |  |  |
+| [Player 2] |  |  |  |  |  |  |  |
+| [Player 3] |  |  |  |  |  |  |  |
+| [Player 4] |  |  |  |  |  |  |  |
+| [Player 5] |  |  |  |  |  |  |  |
+| [Player 6] |  |  |  |  |  |  |  |
+| [Player 7] |  |  |  |  |  |  |  |
+
+
+## Individual Player Analysis
+For every section here, give a citation from the text to support your note and conclusion.
+
+### [Player 1]
+- Strengths:
+- Areas for Improvement:
+- Notable Moments:
+
+### [Player 2]
+- Strengths:
+- Areas for Improvement:
+- Notable Moments:
+
+[Repeat for each player]
+
+## Overall Group Dynamics
+For every section here, give a citation from the text to support your note and conclusion.
+
+- Positive Aspects:
+- Challenges:
+- Memorable Interactions:
+
+## Recommendations
+For every section here, give a citation from the text to support your note and conclusion.
+
+- For the DM:
+- For the Group:
+- Individual Player Suggestions:
+  - [Player 1]:
+  - [Player 2]:
+  [Continue for each player]
+
+## Session Highlights
+For every section here, give a citation from the text to support your note and conclusion.
+
+- Most Exciting Moment:
+- Best Roleplaying Scene:
+- Clever Problem Solving:
+- Funniest Interaction:
+
+## Areas for Future Development
+For every section here, give a citation from the text to support your note and conclusion.
+
+- Story Elements to Explore:
+- Character Arcs to Develop:
+- Group Goals:
+
+## Additional Notes
+For every section here, give a citation from the text to support your note and conclusion.
+
+[Any other observations or comments about the session]
