@@ -125,6 +125,57 @@ Create a new Python script `whisper_transcribe.py` in the `transcript_cleanup/` 
 - TSV files named consistently with existing patterns
 - Maintains compatibility with existing `transcript_cleanup.py` pipeline
 
+# Code Review & Architecture Improvements
+
+## Current State Analysis ✅
+
+**Strengths:**
+- Clear separation of concerns (transcribe → cleanup → AI prompts)
+- Good configuration management with defaults
+- Comprehensive error handling and progress tracking
+- Well-documented with README files
+- Functional and tested pipeline
+
+**Pain Points Identified:**
+
+### 🔴 Critical Issues
+1. **No Dependency Management** - Missing requirements.txt/pyproject.toml
+2. **Hardcoded Paths** - Absolute paths in configs reduce portability
+3. **Monolithic Functions** - 100+ line functions in transcript_cleanup.py
+4. **Config Inconsistency** - Two different config systems (whisper vs cleanup)
+5. **Manual File Management** - No automation for moving files between stages
+
+### 🟡 Medium Issues
+6. **Code Duplication** - Text replacement logic exists in multiple places
+7. **Limited Testing** - Only manual integration tests
+8. **No Logging System** - Only colorama print statements
+9. **Import Pollution** - Global imports and config loading
+10. **Data Format Coupling** - TSV format assumptions throughout
+
+## Proposed Improvements
+
+### Phase 1: Foundation (Quick Wins)
+- **Add dependency management** (requirements.txt)
+- **Create shared config system** with environment variable support
+- **Add logging framework** (replace colorama prints)
+- **Extract common utilities** into shared module
+- **Add basic unit tests** for core functions
+
+### Phase 2: Architectural Improvements
+- **Implement plugin architecture** for cleanup steps
+- **Add pipeline orchestrator** to automate file flow
+- **Create data models** with Pydantic for type safety
+- **Add CLI framework** (Click/Typer) for better UX
+- **Implement factory patterns** for different input types
+
+### Phase 3: Production Readiness
+- **Add comprehensive testing** (pytest with fixtures)
+- **Create Docker containerization**
+- **Add monitoring/metrics** collection
+- **Implement graceful error recovery**
+- **Add API layer** for future web interface
+
+This approach prioritizes immediate stability improvements while building toward the headless server goal with minimal breaking changes.
 
 ---
 
