@@ -1,5 +1,9 @@
 # TTRPG Session Notes Automation
 
+## Originally from
+- https://medium.com/@brandonharris_12357/automating-d-d-notetaking-with-ai-89ecd36e8b0e
+- https://github.com/VCDragoon/dnd-transcript-cleanup
+
 A complete system for processing Discord voice recordings into organized TTRPG session summaries and campaign management materials.
 
 ## Overview
