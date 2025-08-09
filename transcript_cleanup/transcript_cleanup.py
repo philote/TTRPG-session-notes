@@ -99,6 +99,26 @@ def process_tsv_to_csv(file_path):
     df = df.drop_duplicates(subset='text', keep='first')
     print(f"{Fore.CYAN}Total duplicate rows removed (pass 2): {Fore.GREEN}{duplicate_texts.shape[0]}{Style.RESET_ALL}\n")    
 
+    # Optional: Remove silence-related gibberish patterns
+    gibberish_removed_count = 0
+    if config.REMOVE_SILENCE_GIBBERISH:
+        # Create a mask for rows that exactly match gibberish patterns (case sensitive)
+        gibberish_mask = df['text'].str.strip().isin(config.SILENCE_GIBBERISH_PATTERNS)
+        gibberish_removed_count = gibberish_mask.sum()
+        
+        if gibberish_removed_count > 0:
+            # Show what gibberish patterns were found
+            gibberish_found = df.loc[gibberish_mask, 'text'].value_counts()
+            print(f"{Fore.CYAN}Silence Gibberish Patterns Found:{Style.RESET_ALL}")
+            for pattern, count in gibberish_found.items():
+                print(f"\tpattern: '{Fore.YELLOW}{pattern}{Style.RESET_ALL}' occurrences: {Fore.GREEN}{count}{Style.RESET_ALL}")
+            print()
+            
+            # Remove the gibberish rows
+            df = df[~gibberish_mask]
+            
+        print(f"{Fore.CYAN}Total silence gibberish rows removed: {Fore.GREEN}{gibberish_removed_count}{Style.RESET_ALL}\n")
+
     # Determine name based on file_path using config mapping
     name = 'Unknown'
     for key in name_mapping:
