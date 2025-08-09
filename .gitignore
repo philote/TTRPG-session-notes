@@ -11,6 +11,9 @@
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 
+#OS
+.DS_Store
+
 # Local History for Visual Studio Code
 .history/
 
@@ -159,8 +162,8 @@ cython_debug/
 transcript_cleanup/COS ALL SESSIONS.txt
 transcript_cleanup/COS ALL TRANSCRIPTS_UPDATED.txt
 
+# Other
+.claude/
+
 # audio working files
-sessions/*
-session-audio/*
-transcribe/test-multi-files/*
-TEST-DATA/*
+TEST-DATA/

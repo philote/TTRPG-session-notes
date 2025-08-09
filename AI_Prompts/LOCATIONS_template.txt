@@ -4,15 +4,17 @@ Pay careful attention to character interactions, especially when players are des
 
 Here is the list of player characters. These are NOT NPCs.
 
-- **[[Ale-ore]] Bridge (The Dwarf)**: Won crafting tournament using secret orc alloys, helped design deep wells during drought, secretly admires the Shepherd's craftsmanship while opposing him, drunkenly gave [[Mortimer]] dynamite
-- **[[Kurg]] Randalar (The Orc)**: Lost three teeth and kept them as dice, negotiated peace between three armies through bidding war, seeks forgiveness for weapons destroying harbinger monument, secret supplier to [[Ale-ore]]
-- **[[Mortimer]] Montgomery (The Squire)**: Street urchin who joined because [[Fellowship]] looked cool, grooming [[Ulion]]'s unicorn, taking blacksmith lessons from [[Maker]], saved [[Tiny]]'s life, designated holder of mysterious dynamite barrel
-- **[[Ulion]] the Sleepbringer (The Elf)**: Lord of [[Winter Court]], sent to rekindle human-fae bonds, taught [[Nyx]] elven animal speak, captured [[Ale-ore]]'s criminal cousin, former friend of the Shepherd before his transformation
-- **[[Nyx]] of the Pale Flame (The Harbinger)**: Rebelled against Overlord organization, wears forbidden jewelry and whimsical robes, taught animal speak by [[Ulion]], possible former familiar of [[Surtur]] before his inversion
+- **[[Ale-ore|Ale-ore Bridge]] (The Dwarf)**: Won crafting tournament using secret orc alloys, helped design deep wells during drought, secretly admires the Shepherd's craftsmanship while opposing him, drunkenly gave [[Mortimer]] dynamite
+- **[[Kurg|Kurg Randalar]] (The Orc)**: Lost three teeth and kept them as dice, negotiated peace between three armies through bidding war, seeks forgiveness for weapons destroying harbinger monument, secret supplier to [[Ale-ore]]
+- **[[Mortimer|Mortimer Montgomery]] (The Squire)**: Street urchin who joined because [[Fellowship]] looked cool, grooming [[Ulion]]'s unicorn, taking blacksmith lessons from [[Maker]], saved [[Tiny]]'s life, designated holder of mysterious dynamite barrel
+- **[[Ulion|Ulion the Sleepbringer]] (The Elf)**: Lord of [[Winter Court]], sent to rekindle human-fae bonds, taught [[Nyx]] elven animal speak, captured [[Ale-ore]]'s criminal cousin, former friend of the Shepherd before his transformation
+- **[[Nyx|Nyx of the Pale Flame]] (The Harbinger)**: Rebelled against Overlord organization, wears forbidden jewelry and whimsical robes, taught animal speak by [[Ulion]], possible former familiar of [[Surtur]] before his inversion
+
+Important: Create a separate <locationName>.md for each Location using the following LOCATION TEMPLATE.
 
 LOCATION TEMPLATE:
 
-## Location Name
+# Location Name
 | Basic Information | |
 | -------------------- | ------------------------- |
 | Terrain Type | Specify the dominant terrain type (e.g., Forest, City, Dungeon, Mountain). |
@@ -23,58 +25,54 @@ LOCATION TEMPLATE:
 | Key Resources | List any valuable resources found in this location (e.g., "Iron ore," "Magical herbs," "Ancient artifacts"). |
 
 
-> [!tip]+ **Physical Description**
-> 
-> - **General Overview**: Write 2-3 sentences summarizing the key physical features of the location, including notable lanGMarks, geographical features, and overall atmosphere (e.g., "A dark and gloomy forest with towering trees and a thick canopy").
-> - **Sensory Details**: Describe what the characters would experience with their senses (sight, sound, smell, touch, taste) in this location (e.g., "The air is thick with the scent of pine needles and damp earth, the only sounds are the rustling of leaves and the distant hoot of an owl").
-> - **Points of Interest**: List any specific locations within the larger area that are worth noting (e.g., "Ancient ruins," "Hidden cave," "Mysterious altar").  For each point of interest, give a 1 sentence summary.
->	- **Point of Interest 1**:
->	- **Point of Interest 2**:
->	- **Point of Interest N**:
-> - **Map/Diagram**: (Optional) Include a link to a map or diagram of the location if available.
+## Physical Description
+
+ - **General Overview**: Write 2-3 sentences summarizing the key physical features of the location, including notable lanGMarks, geographical features, and overall atmosphere (e.g., "A dark and gloomy forest with towering trees and a thick canopy").
+ - **Sensory Details**: Describe what the characters would experience with their senses (sight, sound, smell, touch, taste) in this location (e.g., "The air is thick with the scent of pine needles and damp earth, the only sounds are the rustling of leaves and the distant hoot of an owl").
+ - **Points of Interest**: List any specific locations within the larger area that are worth noting (e.g., "Ancient ruins," "Hidden cave," "Mysterious altar").  For each point of interest, give a 1 sentence summary.
+	- **Point of Interest 1**:
+	- **Point of Interest 2**:
+	- **Point of Interest N**:
 
 
-> [!locations]+ **Encounters & Events**
-> Identify all significant events that occurred within this location.  For *every* event identified, create a section starting the the EVENT NAME and giving a summary of what occurred
-> #### EVENT NAME 
-> Come up with a name or title for this event.
-> - **Summary of Event**: Give a 3-5 sentence summary of this event.
-> - **Characters Involved**:
-> - **Outcome, Decisions & Consequences**:
-> 
-> #### EVENT NAME 
-> Come up with a name or title for this event.
-> - **Summary of Event**: Give a 3-5 sentence summary of this event.
-> - **Characters Involved**:
-> - **Outcome, Decisions & Consequences**:
-> 
-> *(Repeat this section for EVERY significant event occurring in this location)*
+## Encounters & Events
+
+Identify all significant events that occurred within this location.  For *every* event identified, create a section starting the the EVENT NAME and giving a summary of what occurred
+
+### EVENT NAME
+
+Come up with a name or title for this event.
+ - **Summary of Event**: Give a 3-5 sentence summary of this event.
+ - **Characters Involved**:
+ - **Outcome, Decisions & Consequences**:
+
+*(Repeat this section for EVERY significant event occurring in this location)*
 
 
-> [!combat]+ **History & Lore**
-> 
-> - **Known History**: Briefly summarize any known historical events associated with this location (e.g., "Site of a great battle centuries ago," "Once a thriving dwarven city").
-> - **Rumors & Legends**: List any rumors or legends associated with the location, even if their veracity is unknown (e.g., "Said to be haunted by the ghosts of fallen warriors," "Rumored to contain a powerful artifact").
->	- **Rumor/Legend 1**:
->	- **Rumor/Legend 2**:
->	- **Rumor/Legend N**:
->- **Current Events**: What important events are taking place in or around this location, as of the transcript being processed. (e.g., "A goblin raiding party has been seen near the village," "A mysterious plague is spreading through the city").
->	- **Current Event 1**:
->	- **Current Event 2**:
->	- **Current Event N**:
+## History & Lore
+
+ - **Known History**: Briefly summarize any known historical events associated with this location (e.g., "Site of a great battle centuries ago," "Once a thriving dwarven city").
+ - **Rumors & Legends**: List any rumors or legends associated with the location, even if their veracity is unknown (e.g., "Said to be haunted by the ghosts of fallen warriors," "Rumored to contain a powerful artifact").
+	- **Rumor/Legend 1**:
+	- **Rumor/Legend 2**:
+	- **Rumor/Legend N**:
+- **Current Events**: What important events are taking place in or around this location, as of the transcript being processed. (e.g., "A goblin raiding party has been seen near the village," "A mysterious plague is spreading through the city").
+	- **Current Event 1**:
+	- **Current Event 2**:
+	- **Current Event N**:
 
 
-> [!lore]+ **Secrets & Discoveries**
->
->_Secrets held within the location or important discoveries made there by the players._
->- **Unrevealed Secrets**: List any secrets that the GM has planned for this location but which the players have not yet discovered (e.g., "A hidden passage leading to a secret chamber," "A powerful magical artifact buried beneath the ruins").
->	- **Unrevealed Secret 1**:
->	- **Unrevealed Secret 2**:
->	- **Unrevealed Secret N**:
->- **Player Discoveries**: List any significant discoveries made by the players in this location (e.g., "Found a hidden map," "Uncovered a clue about the villain's plans").
->	- **Player Discovery 1**:
->	- **Player Discovery 2**:
->	- **Player Discovery N**:
+## Secrets & Discoveries
+
+_Secrets held within the location or important discoveries made there by the players._
+- **Unrevealed Secrets**: List any secrets that the GM has planned for this location but which the players have not yet discovered (e.g., "A hidden passage leading to a secret chamber," "A powerful magical artifact buried beneath the ruins").
+	- **Unrevealed Secret 1**:
+	- **Unrevealed Secret 2**:
+	- **Unrevealed Secret N**:
+- **Player Discoveries**: List any significant discoveries made by the players in this location (e.g., "Found a hidden map," "Uncovered a clue about the villain's plans").
+	- **Player Discovery 1**:
+	- **Player Discovery 2**:
+	- **Player Discovery N**:
 
 
 > [!warning]+ **GM Notes**
