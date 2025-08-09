@@ -25,10 +25,10 @@ Create a system to track complex and dynamic storyline, character information, w
 ## Process to create a POC
 1. [DONE] Record a session on Discord using the Craig bot
     - [DONE] then clip them to under 10 mins for easy testing
-2. [TODO] Transcribe the recordings using Whisper
+2. [DONE] Transcribe the recordings using Whisper
     - [TODO] create a script to take in a folder of flac files, trascribe them, then output a folder of tsv files. Whisper python usage info: https://github.com/openai/whisper?tab=readme-ov-file#python-usage
         - no translations, only supporting english
-    - [TODO] run some tests to see how the different Whisper models work with the test files (would be nice if we could use a faster model and still get good results, large-v2 takes a very long time)
+    - [DONE] run some tests to see how the different Whisper models work with the test files (would be nice if we could use a faster model and still get good results, large-v2 takes a very long time)
 3. [TODO] Merge, sort, organize, and clean the tsv files
     - [TODO] review the existing scripts, see if there are improvements to be made
 4. [TODO] use the cleaned up script to create a summary with an LLM API
@@ -56,7 +56,79 @@ Things that need fixed (the current scripts in transcript_cleanup should do all 
 
 We will work with the Whisper .tsv files.
 
-# Notes:
+# Next steps
+- Create a transcoding script with the following requirements
+    - take an input of a zip file of flac files, a folder of flac files or a list of flac files.
+        - if zip, unzip it into a folder then read in all the flac files for processing
+    - uses these defaults:
+        - Model: turbo
+        - condition_on_previous_text: False
+        - compression_ratio_threshold: 1.8
+        - output_format: tsv
+        - fp16: True
+        - language: en
+    - have a config file where these can be set/changed
+    - also make it were they can be changed on cmd line inputs
+    - Create an output folder for the tsv files
+    - show the progress of transcribing
+        - show which file is being processed, and output from whisper
+        - show that you are on x of y files
+    - we want good error reporting for when things go wrong as well as telling the user what got processed and what did not
+
+# Implementation Plan for Whisper Transcription Script
+
+## Overview
+Create a new Python script `whisper_transcribe.py` in the `transcript_cleanup/` directory that automates the transcription of FLAC audio files using OpenAI Whisper.
+
+## Requirements from Project Planning.md:
+- Support input formats: zip file, folder of FLAC files, or list of FLAC files
+- Default Whisper settings: turbo model, condition_on_previous_text=False, compression_ratio_threshold=1.8, TSV output, fp16=True, English language
+- Configuration file support with command-line overrides
+- Progress tracking and error reporting
+- Automatic output folder creation
+
+## Implementation Steps:
+
+### 1. Script Architecture
+- Create `whisper_transcribe.py` as the main script
+- Create `whisper_config.py` for configuration management
+- Use argparse for command-line interface
+- Integrate with existing project structure
+
+### 2. Core Features
+- **Input handling**: Detect and process zip files, directories, or file lists
+- **Zip extraction**: Temporary extraction with cleanup
+- **Whisper integration**: Use the whisper Python API
+- **Progress tracking**: Show current file (x of y) and Whisper output
+- **Error handling**: Comprehensive error reporting and recovery
+- **Output management**: Organized TSV file output with proper naming
+
+### 3. Configuration System
+- Default config matching requirements (turbo, fp16=True, etc.)
+- JSON/Python config file support
+- Command-line parameter overrides
+- Integration with existing config.py pattern
+
+### 4. Testing Strategy
+- Test with the provided test files in `/audio-tests/session-zero-cuts/`
+- Validate zip file processing
+- Verify error handling and progress reporting
+- Ensure proper integration with existing transcript cleanup pipeline
+
+### 5. Dependencies
+- Uses existing project dependencies: pandas, colorama
+- Requires: openai-whisper, zipfile (built-in), argparse (built-in)
+- Will check for whisper installation and provide helpful error messages
+
+### 6. Output Structure
+- Creates organized output folders
+- TSV files named consistently with existing patterns
+- Maintains compatibility with existing `transcript_cleanup.py` pipeline
+
+
+---
+
+# Notes for someday, ignore for now:
 - https://github.com/openai/whisper/discussions/2570
 
 ## ideas to improve
@@ -65,7 +137,7 @@ We will work with the Whisper .tsv files.
 - efficient VAD processing to remove as noise as possible
 
 ## ore ideas
-f processing time is not a problem for you, here is perhaps the ultimate way to get a good SRT.
+if processing time is not a problem for you, here is perhaps the ultimate way to get a good SRT.
 
     Do all we explained above to get a TXT transcription as clean and accurate as possible, without hallucination:
     a- use VAD to chunk the sound file, removing noise parts.

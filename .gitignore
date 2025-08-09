@@ -148,3 +148,4 @@ sessions/*
 session-audio/*
 audio-tests/*
 test-output/*
+transcribe/test-multi-files/*

@@ -10,6 +10,13 @@ The system produces both cleaned transcripts and uses AI models (ChatGPT/Claude)
 
 ## Key Scripts and Commands
 
+### Audio Transcription (New!)
+```bash
+# Transcribe audio files using the automated script
+cd transcribe
+python whisper_transcribe.py /path/to/audio/files/ --output-dir transcripts --no-fp16
+```
+
 ### Main Processing Script
 ```bash
 # Run the transcript cleanup pipeline
@@ -17,9 +24,9 @@ cd transcript_cleanup
 python transcript_cleanup.py
 ```
 
-### Whisper Transcription
+### Manual Whisper Transcription (Legacy)
 ```bash
-# Sample command for transcribing audio files
+# Sample command for transcribing audio files manually
 whisper --model large-v2 --language en --condition_on_previous_text False --compression_ratio_threshold 1.8 [audio_file.flac]
 ```
 
@@ -97,6 +104,15 @@ Based on the README, initial setup requires:
 │   ├── *_processed.csv             # Cleaned individual files  
 │   ├── sessions_*_merged.csv       # Combined speaker data
 │   └── Session * Final *.txt       # Output transcripts
+├── transcribe/                     # Audio transcription tools
+│   ├── whisper_transcribe.py       # Main transcription script
+│   ├── whisper_config.py           # Configuration management
+│   └── README.md # Usage documentation
+├── transcript_cleanup/             # Text processing scripts
+│   ├── transcript_cleanup.py       # Main processing pipeline
+│   ├── json_text_replace.py        # Batch text replacement
+│   ├── config.py                   # Session configuration
+│   └── merge_replacements.json     # Name/term corrections
 ├── audio-tests/                    # Test recordings
 ├── AI_Prompts/                     # Campaign management prompts
 │   ├── dm_simple_story_summarizer.txt
@@ -104,11 +120,6 @@ Based on the README, initial setup requires:
 │   ├── LOCATIONS_template.txt
 │   ├── PC_tracker.txt
 │   └── [other prompt templates]
-└── transcript_cleanup/             # Processing scripts
-    ├── transcript_cleanup.py       # Main processing pipeline
-    ├── json_text_replace.py        # Batch text replacement
-    ├── config.py                   # Session configuration
-    └── merge_replacements.json     # Name/term corrections
 ```
 
 ## Dependencies
