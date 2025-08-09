@@ -13,7 +13,7 @@ from colorama import Fore, Style, init
 #     import shutil
 #     shutil.copyfile('default_config.py', 'config.py')
     
-# # do the same for the merge_replacements.sjon
+# # do the same for the merge_replacements.json
 # if not os.path.isfile('merge_replacements.json'):
 #     import shutil
 #     shutil.copyfile('default_merge_replacements.json', 'merge_replacements.json')

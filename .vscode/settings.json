@@ -1,0 +1,8 @@
+{
+    "cSpell.enabled": true,
+    "cSpell.enabledFileTypes": {
+        "tsv": true,
+        "plaintext": true
+    },
+    "cSpell.mergeCSpellSettings": false
+}

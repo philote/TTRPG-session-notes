@@ -146,3 +146,5 @@ transcript_cleanup/COS ALL TRANSCRIPTS_UPDATED.txt
 # audio working files
 sessions/*
 session-audio/*
+audio-tests/*
+test-output/*
