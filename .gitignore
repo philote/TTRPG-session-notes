@@ -165,5 +165,5 @@ transcript_cleanup/COS ALL TRANSCRIPTS_UPDATED.txt
 # Other
 .claude/
 
-# audio working files
+# test files
 TEST-DATA/
