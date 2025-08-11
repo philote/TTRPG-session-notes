@@ -126,7 +126,8 @@ def apply_text_replacements_to_dataframe(df, config, logger):
     replacements = load_replacements_file(str(replacements_path))
     
     if not replacements:
-        logger.warning("No replacements loaded - skipping text replacement step")
+        logger.info("No text replacements configured - transcript will not be modified")
+        logger.info(f"To add corrections, edit: {replacements_path.name}")
         return df
     
     # Apply replacements to text column

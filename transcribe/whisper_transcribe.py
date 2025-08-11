@@ -31,7 +31,7 @@ import json
 from colorama import Fore, Style, init
 
 # Import whisper_config
-from whisper_config import WhisperConfig, get_available_models, validate_model
+from .whisper_config import WhisperConfig, get_available_models, validate_model
 
 # Initialize colorama
 init()

@@ -33,8 +33,36 @@ def load_replacements_file(file_path: str, base_dir: Optional[str] = None) -> Di
         replacement_path = Path(base_dir) / replacement_path
     
     if not replacement_path.exists():
-        logger.warning(f"Replacements file not found: {replacement_path}")
-        return {}
+        logger.info(f"Replacements file not found: {replacement_path}")
+        logger.info("Creating default replacements file with examples...")
+        
+        # Create default replacements file
+        default_replacements = {
+            "_comment": "Add your text corrections here. Format: 'CorrectName': ['mishear1', 'mishear2']",
+            "_examples": {
+                "Gandalf": ["gandolf", "gandulf", "gand off"],
+                "PlayerName": ["playername", "player name"],
+                "CharacterName": ["charactername", "character name"]
+            }
+        }
+        
+        try:
+            # Ensure parent directory exists
+            replacement_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Write default file
+            with open(replacement_path, 'w', encoding='utf-8') as f:
+                json.dump(default_replacements, f, indent=2)
+            
+            logger.info(f"Created default replacements file: {replacement_path}")
+            logger.info("Edit this file to add your own text corrections")
+            
+            # Return empty dict for now since examples are prefixed with _
+            return {}
+            
+        except Exception as e:
+            logger.warning(f"Could not create default replacements file: {e}")
+            return {}
     
     try:
         with open(replacement_path, 'r', encoding='utf-8') as file:
@@ -317,8 +345,32 @@ def clean_transcript_dataframe(df: pd.DataFrame,
     Returns:
         Cleaned DataFrame
     """
+    # Try to use the new configurable pipeline first
+    try:
+        # Import here to avoid circular dependencies
+        import sys
+        from pathlib import Path
+        
+        # Add transcript_cleanup to path
+        transcript_cleanup_path = Path(__file__).parent.parent / 'transcript_cleanup'
+        if str(transcript_cleanup_path) not in sys.path:
+            sys.path.insert(0, str(transcript_cleanup_path))
+        
+        from cleanup_steps import run_cleanup_pipeline
+        return run_cleanup_pipeline(df, config_dict)
+        
+    except ImportError:
+        # Fallback to the original pipeline if cleanup_steps is not available
+        logger = get_logger()
+        logger.warning("Using legacy cleanup pipeline - cleanup_steps.py not found")
+        return _legacy_clean_transcript_dataframe(df, config_dict)
+
+
+def _legacy_clean_transcript_dataframe(df: pd.DataFrame,
+                                     config_dict: Dict[str, Any]) -> pd.DataFrame:
+    """Legacy cleaning pipeline for backward compatibility."""
     logger = get_logger()
-    logger.info(f"Starting transcript cleaning pipeline with {len(df)} rows")
+    logger.info(f"Starting legacy transcript cleaning pipeline with {len(df)} rows")
     
     # Step 1: Remove duplicate short text
     if config_dict.get('short_duplicate_text_length', 0) > 0:
@@ -356,5 +408,5 @@ def clean_transcript_dataframe(df: pd.DataFrame,
             patterns=config_dict['silence_gibberish_patterns']
         )
     
-    logger.info(f"Transcript cleaning complete: {len(df)} rows remaining")
+    logger.info(f"Legacy transcript cleaning complete: {len(df)} rows remaining")
     return df

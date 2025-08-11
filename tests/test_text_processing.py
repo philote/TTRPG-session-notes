@@ -42,9 +42,10 @@ class TestTextProcessing(unittest.TestCase):
     
     def tearDown(self):
         """Clean up test environment."""
-        if os.path.exists(self.replacements_file):
-            os.remove(self.replacements_file)
-        os.rmdir(self.temp_dir)
+        import shutil
+        # Clean up entire temp directory and all files within it
+        if os.path.exists(self.temp_dir):
+            shutil.rmtree(self.temp_dir)
     
     def test_load_replacements_file(self):
         """Test loading replacements from JSON file."""
@@ -57,7 +58,8 @@ class TestTextProcessing(unittest.TestCase):
     
     def test_load_replacements_file_missing(self):
         """Test loading non-existent replacements file."""
-        replacements = load_replacements_file("nonexistent.json")
+        nonexistent_file = os.path.join(self.temp_dir, "nonexistent.json")
+        replacements = load_replacements_file(nonexistent_file)
         self.assertEqual(replacements, {})
     
     def test_apply_text_replacements(self):

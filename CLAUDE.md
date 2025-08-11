@@ -10,32 +10,35 @@ The system has been modernized with **Phase 1 improvements** including shared ut
 
 ## Key Scripts and Commands (Phase 1 Improved)
 
-### Audio Transcription
+### 🆕 Phase 2: Unified CLI Interface (Recommended)
 ```bash
-# Transcribe audio files using the automated script
-python transcribe/whisper_transcribe.py /path/to/audio/files/ --output-dir transcripts --model turbo --no-fp16
+# Full automated pipeline: audio → transcripts → cleaned text
+python cli/main.py process audio_files/ --output-dir session_01 --all-steps --session-name "Campaign" --session-part "Episode_1"
+
+# Individual operations with enhanced UX
+python cli/main.py transcribe audio.flac --output-dir transcripts --model turbo --no-fp16
+python cli/main.py cleanup --base-path transcripts --session-name my_session
+python cli/main.py replace --input transcript.txt --replacements corrections.json
+
+# Get comprehensive help for any command
+python cli/main.py --help
+python cli/main.py process --help
+python cli/main.py cleanup --help
 ```
 
-### Main Processing Script (v2 - Phase 1 Improved)
+### Legacy Interface (Still Supported - Phase 1 Improved)
 ```bash
-# Run the modern transcript cleanup pipeline with JSON configuration
+# Audio Transcription
+python transcribe/whisper_transcribe.py /path/to/audio/files/ --output-dir transcripts --model turbo --no-fp16
+
+# Main Processing Script with configurable cleanup steps
 python transcript_cleanup/transcript_cleanup_v2.py --config config.json --log-level INFO
 
-# Use environment variables for configuration
-export TTRPG_BASE_PATH="/path/to/transcripts"
-python transcript_cleanup/transcript_cleanup_v2.py
+# Text Replacement Tool
+python transcript_cleanup/json_text_replace_v2.py --input transcript.txt --replacements replacements.json
 
 # Quick test with provided test data (run from project root)
-python transcript_cleanup/transcript_cleanup_v2.py --base-path transcripts-test-data
-```
-
-### Text Replacement Tool (v2 - Phase 1 Improved)
-```bash
-# Apply name/term replacements with auto-detection
-python transcript_cleanup/json_text_replace_v2.py
-
-# Specify files explicitly
-python transcript_cleanup/json_text_replace_v2.py --input transcript.txt --replacements replacements.json
+python transcript_cleanup/transcript_cleanup_v2.py --base-path TEST-DATA/transcripts-test-data
 ```
 
 ### Testing (Phase 1)

@@ -1,258 +1,361 @@
 # TTRPG Session Notes Automation
 
-A complete system for processing Discord voice recordings into organized TTRPG session summaries and campaign management materials.
+Turn your Discord TTRPG sessions into organized campaign notes automatically.
 
-## Originally From
-- https://medium.com/@brandonharris_12357/automating-d-d-notetaking-with-ai-89ecd36e8b0e
-- https://github.com/VCDragoon/dnd-transcript-cleanup
+## What You Get
 
-## Overview
+Transform hours of audio recordings into comprehensive campaign documentation:
 
-This modernized system provides a complete workflow with professional tooling:
+- **One command**: audio files → clean transcripts → campaign documents
+- **AI-powered**: Generate NPC profiles, location notes, story summaries  
+- **Flexible**: Works with any audio format, customizable processing
+- **Complete**: From recording to campaign documentation in minutes
 
-1. **Audio Transcription** (`transcribe/`) - Convert audio files to text using OpenAI Whisper
-2. **Transcript Processing** (`transcript_cleanup/`) - Clean and organize transcripts with Phase 1 improvements
-3. **AI-Powered Documentation** (`AI_Prompts/`) - Generate campaign notes, NPC profiles, and summaries
-4. **Shared Utilities** (`shared_utils/`) - Common configuration, logging, and processing functions
-5. **Testing Suite** (`tests/`) - Comprehensive unit tests for reliability
+## Get Started in 2 Minutes
 
-## 🚀 Quick Start
-
-### Prerequisites
+### Quick Install
 ```bash
 pip install -r requirements.txt
 ```
 
-### 1. Audio Transcription
-Convert audio files to TSV transcripts:
+### Try It Now
 ```bash
-# Transcribe a single file
-python transcribe/whisper_transcribe.py audio_file.flac --output-dir transcripts
+# Quick demo with existing transcripts (works immediately)
+python cli/main.py process TEST-DATA/transcripts-test-data/ --output-dir my_first_demo --cleanup-only
 
-# Transcribe a directory of files
-python transcribe/whisper_transcribe.py /path/to/audio/files/ --output-dir transcripts
+# Full workflow with audio files (the real example you'll use)
+python cli/main.py process TEST-DATA/audio-tests/session-zero-cuts/ --output-dir my_first_session --all-steps
 
-# Transcribe with custom settings
-python transcribe/whisper_transcribe.py audio_files.zip --model large-v2 --no-fp16
+# View your results
+ls my_first_session/
+# Session_complete_Final_COMPLETE.txt  ← Your clean transcript
+# *.csv files                          ← Processed data files
 ```
 
-### 2. Transcript Processing (Phase 1 Improved)
-Clean and organize transcripts with modern tooling:
+### What Happens
+1. **Audio → Text**: Whisper AI transcribes each player's audio separately
+2. **Clean & Organize**: Remove duplicates, fix timing, merge speakers chronologically  
+3. **Smart Corrections**: Apply name mappings (fix "Gandolf" → "Gandalf")
+4. **Campaign Notes**: Use AI prompts to generate NPC profiles, location docs, story summaries
+
+### Real Example Output
+**Input**: 45 minutes of Discord audio with 6 players  
+**Output**: Clean 8-page transcript + AI-ready prompts for campaign management
+
+## Essential Commands
+
+### Complete Automation (Recommended)
 ```bash
-# Using v2 improved script with JSON configuration
-python transcript_cleanup/transcript_cleanup_v2.py --config my_config.json
+# Everything: transcribe → clean → organize
+python cli/main.py process session_audio/ --output-dir campaign_session_01 --all-steps
 
-# Using environment variables for configuration
-export TTRPG_SESSION_NAME="my_session"
-export TTRPG_BASE_PATH="/path/to/transcripts"
-python transcript_cleanup/transcript_cleanup_v2.py
-
-# Quick test with existing data (run from project root)
-python transcript_cleanup/transcript_cleanup_v2.py --base-path transcripts-test-data --log-level INFO
+# Customize session info
+python cli/main.py process audio/ --output-dir session --session-name "Curse of Strahd" --session-part "Episode_3"
 ```
 
-### 3. Text Replacement (Phase 1 Improved)
-Apply name/term corrections:
+### Individual Operations
 ```bash
-# Auto-detect input files
-python transcript_cleanup/json_text_replace_v2.py
+# Just transcribe audio files
+python cli/main.py transcribe audio.flac --output-dir transcripts
 
-# Specify files explicitly
-python transcript_cleanup/json_text_replace_v2.py \
-  --input transcript.txt \
-  --replacements replacements.json \
-  --output transcript_corrected.txt
+# Just clean existing transcripts  
+python cli/main.py cleanup --base-path transcripts --session-name "My Campaign"
+
+# Just apply text corrections
+python cli/main.py replace --input transcript.txt --replacements corrections.json
+
+# Get help for any command
+python cli/main.py --help
+python cli/main.py process --help
 ```
 
-### 4. AI Documentation
-Use prompts in `AI_Prompts/` with ChatGPT or Claude to generate campaign documentation.
+## Common Workflow Patterns
 
-## 🏗️ Architecture
+### Weekly Campaign Sessions
+```bash
+# 1. Record with Craig Discord bot → download audio files
+# 2. One command processing
+python cli/main.py process session_audio/ --output-dir "session_12" --all-steps --session-name "Waterdeep" --session-part "episode_12"
 
-### Phase 1 Improvements (Completed)
-- ✅ **Dependency Management**: `requirements.txt` for consistent environments
-- ✅ **Shared Configuration**: JSON configs with environment variable support  
-- ✅ **Professional Logging**: Colored, structured logging instead of print statements
-- ✅ **Shared Utilities**: Common text processing and file operations
-- ✅ **Unit Testing**: 23 comprehensive tests with 100% pass rate
-- ✅ **Backward Compatibility**: Migration tools for existing setups
+# 3. Create name corrections (optional but recommended)
+echo '{"Voldemort": ["voldamort", "boltimore"], "Hermione": ["hermione", "her mine"]}' > session_12/merge_replacements.json
 
-### Processing Pipeline
-1. **Input**: TSV files from Whisper transcription (one per speaker)
-2. **Individual Processing**: Remove duplicates, merge adjacent segments, clean short text
-3. **Merge**: Combine all speakers into chronological order
-4. **Text Replacement**: Apply name/term corrections
-5. **Output**: Generate session summary parts and complete transcript
+# 4. Re-run to apply corrections
+python cli/main.py process session_12 --output-dir session_12 --cleanup-only
 
-### Directory Structure
-```
-/
-├── transcribe/                     # Audio transcription tools
-│   ├── whisper_transcribe.py       # Main transcription script (Phase 1)
-│   ├── whisper_config.py           # Configuration management
-│   └── README.md                   # Transcription usage guide
-├── transcript_cleanup/             # Text processing scripts (Phase 1 improved)
-│   ├── transcript_cleanup_v2.py    # Main processing pipeline (v2)
-│   ├── json_text_replace_v2.py     # Text replacement tool (v2)
-│   ├── README.md                   # Detailed usage documentation
-│   └── OLD/                        # Legacy scripts (archived)
-├── shared_utils/                   # Phase 1 shared utilities
-│   ├── config.py                   # Unified configuration system
-│   ├── logging_config.py           # Professional logging
-│   ├── text_processing.py          # Text processing utilities
-│   └── file_operations.py          # File I/O utilities
-├── tests/                          # Test suite
-│   ├── test_config.py              # Configuration tests
-│   ├── test_text_processing.py     # Text processing tests
-│   ├── test_file_operations.py     # File operations tests
-│   └── run_tests.py                # Test runner
-├── AI_Prompts/                     # Campaign management prompts
-│   ├── dm_simple_story_summarizer.txt
-│   ├── NPC_template.txt
-│   ├── LOCATIONS_template.txt
-│   └── [other templates]
-├── TEST-DATA/                      # Test audio and transcript files
-└── requirements.txt                # Python dependencies
+# 5. Use transcript with AI prompts from AI_Prompts/ folder
 ```
 
-## 🔧 Configuration
+### One-shot Adventure Processing  
+```bash
+# Quick processing for single session
+python cli/main.py process oneshot_audio/ --output-dir "halloween_oneshot" --all-steps
 
-### Modern Configuration (Phase 1)
-The system now supports multiple configuration methods:
+# Generate story summary using AI_Prompts/dm_simple_story_summarizer.txt
+```
 
-#### 1. JSON Configuration Files
+### Campaign Catch-up Documentation
+```bash
+# Process multiple old sessions
+for session in session_*_audio/; do
+    python cli/main.py process "$session" --output-dir "${session%_audio}" --all-steps
+done
+```
+
+## Generate Campaign Notes
+
+The system includes specialized AI prompts for campaign management:
+
+### Available Templates
+- **Story Summaries**: NY Times-style short stories (10+ pages, Stephen King/Neil Gaiman style)
+- **NPC Profiles**: Comprehensive character analysis with motivations, relationships, roleplaying notes
+- **Location Documentation**: Detailed location docs with history, secrets, plot hooks  
+- **Character Tracking**: Individual player analysis with quotes and development tracking
+- **Encounter Documentation**: Structured encounter breakdowns
+
+### Usage with ChatGPT/Claude
+1. Process your session: `python cli/main.py process audio/ --output-dir session --all-steps`
+2. Copy content from `Session_*_Final_COMPLETE.txt`
+3. Use with prompts from `AI_Prompts/` directory
+4. For longer transcripts, Claude is recommended (larger context window)
+
+## Customize Your Workflow
+
+### Essential Configuration
+Create `config.json` for your campaign:
 ```json
 {
   "cleanup": {
-    "session_name": "my_campaign",
-    "part": "session_01",
-    "base_path": "/path/to/transcripts",
-    "short_duplicate_text_length": 4,
-    "merge_threshold": 0.01
+    "session_name": "curse_of_strahd",
+    "base_path": "/path/to/sessions"
   },
   "name_mappings": {
-    "discord_user": "Player: Name (Character: Name)"
+    "discord_user123": "Player: Sarah (Character: Elara)",
+    "gamer_dude": "Player: Mike (Character: Thorin)"
   }
 }
 ```
 
-#### 2. Environment Variables
+### Environment Variables (Alternative)
 ```bash
 export TTRPG_SESSION_NAME="my_campaign"
-export TTRPG_BASE_PATH="/path/to/transcripts"
+export TTRPG_BASE_PATH="/path/to/sessions"
 export TTRPG_WHISPER_MODEL="turbo"
-export TTRPG_LOG_LEVEL="INFO"
 ```
 
+### Advanced Processing Control
+```json
+{
+  "cleanup": {
+    "enable_remove_duplicates": true,
+    "enable_merge_segments": true,
+    "enable_remove_short": false,
+    "short_duplicate_text_length": 4,
+    "merge_threshold": 0.01
+  }
+}
+```
 
-## 🧪 Testing
+### Command Line Overrides
+```bash
+# Skip specific processing steps
+python cli/main.py cleanup --skip-duplicates --skip-merge
+
+# Use different Whisper model
+python cli/main.py transcribe audio.flac --model large-v2 --no-fp16
+```
+
+## Testing Your Setup
 
 ### Run All Tests
 ```bash
-# Using pytest (recommended)
+# Verify installation
 pytest tests/ -v
 
-# Using custom test runner
-python tests/run_tests.py
-
-# Using unittest
-python -m unittest discover tests/ -v
+# Test with sample transcript data
+python cli/main.py process TEST-DATA/transcripts-test-data/ --output-dir test_output --cleanup-only
 ```
 
-### Integration Testing
+### Integration Test
 ```bash
-# Test with real transcript data (run from project root)
-python transcript_cleanup/transcript_cleanup_v2.py --base-path transcripts-test-data
+# Process real transcript data
+python cli/main.py cleanup --base-path TEST-DATA/transcripts-test-data --session-name "test_session"
 ```
 
-## 📁 File Formats
+## Common Issues & Solutions
+
+### Missing Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### Audio Transcription Issues
+```bash
+# Use CPU-optimized model
+python cli/main.py transcribe audio.flac --model base --no-fp16
+
+# For low-quality audio
+python cli/main.py transcribe audio.flac --model large-v2
+```
+
+### Configuration Problems
+```bash
+# Verify your setup
+python cli/main.py --help
+
+# Check specific command options
+python cli/main.py cleanup --help
+```
+
+### Path Issues
+```bash
+# Always use absolute paths for reliability
+python cli/main.py process /full/path/to/audio/ --output-dir /full/path/to/output/
+```
+
+### Text Replacement Not Working
+```bash
+# Verify your replacements file format
+echo '{"CorrectName": ["mishear1", "mishear2"]}' > merge_replacements.json
+
+# Check file location (should be in output directory)
+python cli/main.py replace --replacements /full/path/to/merge_replacements.json
+```
+
+## Complete Command Reference
+
+### Main Commands
+| Command | Purpose | Example |
+|---------|---------|---------|
+| `process` | Full automation pipeline | `python cli/main.py process audio/ --output-dir session --all-steps` |
+| `transcribe` | Audio to text conversion | `python cli/main.py transcribe audio.flac --output-dir transcripts` |
+| `cleanup` | Process transcript files | `python cli/main.py cleanup --base-path transcripts` |
+| `replace` | Apply text corrections | `python cli/main.py replace --input transcript.txt` |
+
+### Process Command Options
+```bash
+python cli/main.py process INPUT_PATH --output-dir OUTPUT_DIR [options]
+
+Options:
+  --all-steps              Run transcribe → cleanup → replace
+  --transcribe-only        Only convert audio to text
+  --cleanup-only           Only process existing transcripts
+  --session-name NAME      Campaign/session identifier  
+  --session-part PART      Episode/part identifier
+  --model MODEL            Whisper model (tiny to turbo)
+  --no-fp16               Use CPU-only processing
+```
+
+### Transcribe Command Options
+```bash
+python cli/main.py transcribe INPUT_PATH --output-dir OUTPUT_DIR [options]
+
+Options:
+  --model MODEL           Whisper model: tiny, base, small, medium, large, large-v2, turbo
+  --no-fp16              Disable fp16 (required for CPU-only)
+  --language LANG        Audio language (default: en)
+  --config-file FILE     Custom Whisper configuration
+```
+
+### Cleanup Command Options
+```bash
+python cli/main.py cleanup --base-path PATH [options]
+
+Options:
+  --session-name NAME     Override session name
+  --part PART            Override session part  
+  --skip-duplicates      Disable duplicate removal
+  --skip-merge           Disable segment merging
+  --skip-short           Disable short text removal
+  --skip-gibberish       Disable silence/gibberish removal
+```
+
+## File Formats
 
 ### Input Files
-- **Audio**: `.flac`, `.wav`, `.mp3` (for Whisper transcription)
-- **Transcripts**: `.tsv` files with columns: `start`, `end`, `text` (from Whisper)
+- **Audio**: `.flac`, `.wav`, `.mp3` (Craig Discord bot output recommended)
+- **Transcripts**: `.tsv` files with `start`, `end`, `text` columns (from Whisper)
 
-### Configuration Files  
-- **Replacements**: `merge_replacements.json` - JSON mapping for correcting misheard terms
+### Configuration Files
+- **Main Config**: `config.json` with cleanup settings and name mappings
+- **Text Corrections**: `merge_replacements.json` for fixing misheard terms
   ```json
   {
-    "CorrectName": ["mishear1", "mishear2"],
-    "Gandalf": ["gandolf", "gandulf"]
+    "Gandalf": ["gandolf", "gandulf", "gand off"],
+    "PlayerName": ["playername", "player name"]  
   }
   ```
 
 ### Output Files
-- **Processed CSVs**: Individual cleaned speaker files (`*_processed.csv`)
-- **Merged CSV**: Combined chronological transcript (`*_merged.csv`)
-- **Final Transcript**: Clean, readable session transcript (`.txt`)
+- **Individual CSVs**: `*_processed.csv` (cleaned per-speaker data)
+- **Combined CSV**: `*_merged.csv` (chronological speaker data)
+- **Final Transcript**: `Session_*_Final_COMPLETE.txt` (readable transcript)
+- **Split Parts**: `Session_*_part_N.txt` (if transcript is very long)
 
-## 🛠️ Troubleshooting
+## Architecture Overview
 
-### Common Issues
+### Processing Pipeline
+1. **Input**: Audio files or TSV transcripts (one per speaker)
+2. **Individual Processing**: Remove duplicates, merge adjacent segments, clean short text
+3. **Merge**: Combine all speakers in chronological order
+4. **Text Replacement**: Apply name/term corrections from JSON file
+5. **Output**: Generate readable transcripts and organized data files
 
-1. **Missing Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Configuration Errors**
-   ```bash
-   # Verify your configuration
-   python transcript_cleanup/transcript_cleanup_v2.py --help
-   ```
-
-3. **Transcription Issues**
-   ```bash
-   # Use fallback model
-   python transcribe/whisper_transcribe.py audio.flac --model base --no-fp16
-   ```
-
-4. **Path Issues**
-   ```bash
-   # Use absolute paths
-   python transcript_cleanup/transcript_cleanup_v2.py --base-path /full/path/to/files
-   ```
-
-### Getting Help
-- Check the `transcript_cleanup/README.md` for detailed processing information
-- Review test files in `tests/` for usage examples
-- See `CLAUDE.md` for development guidance
-- Check `Project Planning.md` for architectural details
-
-## 🎯 Workflow Example
-
-```bash
-# 1. Transcribe audio files
-python transcribe/whisper_transcribe.py session_audio/ --output-dir my_session
-
-# 2. Create replacements file
-echo '{"PlayerName": ["playername", "player name"]}' > my_session/merge_replacements.json
-
-# 3. Process transcripts  
-python transcript_cleanup/transcript_cleanup_v2.py --base-path my_session
-
-# 4. Apply additional corrections if needed
-python transcript_cleanup/json_text_replace_v2.py --input my_session/Session_complete_Final_COMPLETE.txt
-
-# 5. Use AI prompts for campaign documentation
-# (Copy transcript content to ChatGPT/Claude with prompts from AI_Prompts/)
+### Directory Structure
+```
+project/
+├── cli/                     # Unified command interface
+├── transcribe/              # Audio transcription (Whisper)
+├── transcript_cleanup/      # Text processing and cleanup
+├── shared_utils/           # Common configuration and utilities
+├── AI_Prompts/             # Campaign management templates
+├── tests/                  # Test suite
+└── TEST-DATA/              # Sample files for testing
 ```
 
-## 🚀 Future Roadmap
+### Technology Stack
+- **Audio Processing**: OpenAI Whisper for transcription
+- **Text Processing**: pandas for data manipulation
+- **Configuration**: JSON files + environment variables
+- **Logging**: Structured, colored output for progress tracking
+- **Testing**: pytest with comprehensive unit tests
 
-### Phase 2: Architectural Improvements (Planned)
-- Plugin architecture for cleanup steps
-- Pipeline orchestrator for automated file flow
-- Data models with Pydantic for type safety
-- CLI framework (Click/Typer) for better UX
-- Factory patterns for different input types
+## Legacy Interface
 
-### Phase 3: Production Readiness (Planned)
-- Docker containerization
-- Monitoring/metrics collection
-- Graceful error recovery
-- API layer for web interface
-- Comprehensive documentation site
+For users who prefer the original scripts:
+
+```bash
+# Audio transcription
+python transcribe/whisper_transcribe.py audio.flac --output-dir transcripts
+
+# Transcript processing  
+python transcript_cleanup/transcript_cleanup_v2.py --base-path transcripts
+
+# Text replacement
+python transcript_cleanup/json_text_replace_v2.py --input transcript.txt
+```
+
+## Development & Contributing
+
+### Running Tests
+```bash
+pytest tests/ -v
+python tests/run_tests.py
+```
+
+### Project Structure
+- Phase 1: Shared utilities, professional logging, unified configuration
+- Phase 2: CLI interface, pipeline automation, configurable processing
+- Maintained with KISS principles: simple, maintainable improvements without over-engineering
+
+### Future Roadmap
+- Docker containerization for consistent deployments
+- Enhanced error recovery and resume capabilities
+- Performance optimizations for large audio files
+- Extended AI prompt templates and automation
 
 ---
 
-**Note**: This system has been modernized with Phase 1 improvements for better reliability, maintainability, and user experience. Legacy scripts are preserved in `transcript_cleanup/OLD/` for backward compatibility.
+**Originally inspired by**: [Automating D&D Notetaking with AI](https://medium.com/@brandonharris_12357/automating-d-d-notetaking-with-ai-89ecd36e8b0e)
+
+This system has been modernized with Phase 1 & 2 improvements following KISS principles. The unified CLI interface provides streamlined automation while maintaining full backward compatibility.
