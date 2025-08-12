@@ -8,13 +8,17 @@ import argparse
 import sys
 from pathlib import Path
 
-# Add project root to path
-project_root = Path(__file__).parent.parent
-if str(project_root) not in sys.path:
-    sys.path.insert(0, str(project_root))
-
 from shared_utils.logging_config import setup_logging, get_logger
+from shared_utils.config import load_config
 from cli.commands import transcribe_cmd, cleanup_cmd, replace_cmd, process_cmd
+
+# Command registry for dynamic dispatch
+COMMANDS = {
+    'transcribe': transcribe_cmd,
+    'cleanup': cleanup_cmd,
+    'replace': replace_cmd,
+    'process': process_cmd,
+}
 
 
 def create_main_parser():
@@ -58,11 +62,9 @@ Examples:
         metavar='COMMAND'
     )
     
-    # Add subcommands
-    transcribe_cmd.add_parser(subparsers)
-    cleanup_cmd.add_parser(subparsers)
-    replace_cmd.add_parser(subparsers)
-    process_cmd.add_parser(subparsers)
+    # Add subcommands dynamically
+    for command_module in COMMANDS.values():
+        command_module.add_parser(subparsers)
     
     return parser
 
@@ -75,28 +77,38 @@ def main():
     # Setup logging
     logger = setup_logging(level=args.log_level, use_colors=True)
     
+    # Load configuration if provided
+    config = None
+    if args.config:
+        try:
+            config = load_config(args.config)
+            logger.debug(f"Loaded configuration from {args.config}")
+        except Exception as e:
+            logger.warning(f"Failed to load config {args.config}: {e}")
+    
     # Show help if no command provided
     if not args.command:
         parser.print_help()
         return 0
     
     try:
-        # Execute the appropriate command
-        if args.command == 'transcribe':
-            return transcribe_cmd.run(args, logger)
-        elif args.command == 'cleanup':
-            return cleanup_cmd.run(args, logger)
-        elif args.command == 'replace':
-            return replace_cmd.run(args, logger)
-        elif args.command == 'process':
-            return process_cmd.run(args, logger)
+        # Execute the appropriate command dynamically
+        command_module = COMMANDS.get(args.command)
+        if command_module:
+            return command_module.run(args, logger)
         else:
             logger.error(f"Unknown command: {args.command}")
-            return 1
+            return 2
             
     except KeyboardInterrupt:
         logger.info("Operation cancelled by user")
-        return 1
+        return 130  # Standard UNIX exit code for SIGINT
+    except FileNotFoundError as e:
+        logger.error(f"File not found: {e}")
+        return 2
+    except PermissionError as e:
+        logger.error(f"Permission denied: {e}")
+        return 77  # Standard UNIX exit code for permission denied
     except Exception as e:
         logger.error(f"Command failed: {e}")
         logger.debug("Full error details:", exc_info=True)

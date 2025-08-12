@@ -13,17 +13,17 @@ The system has been modernized with **Phase 1 improvements** including shared ut
 ### 🆕 Phase 2: Unified CLI Interface (Recommended)
 ```bash
 # Full automated pipeline: audio → transcripts → cleaned text
-python cli/main.py process audio_files/ --output-dir session_01 --all-steps --session-name "Campaign" --session-part "Episode_1"
+python main.py process audio_files/ --output-dir session_01 --all-steps --session-name "Campaign" --session-part "Episode_1"
 
 # Individual operations with enhanced UX
-python cli/main.py transcribe audio.flac --output-dir transcripts --model turbo --no-fp16
-python cli/main.py cleanup --base-path transcripts --session-name my_session
-python cli/main.py replace --input transcript.txt --replacements corrections.json
+python main.py transcribe audio.flac --output-dir transcripts --model turbo --no-fp16
+python main.py cleanup --base-path transcripts --session-name my_session
+python main.py replace --input transcript.txt --replacements corrections.json
 
 # Get comprehensive help for any command
-python cli/main.py --help
-python cli/main.py process --help
-python cli/main.py cleanup --help
+python main.py --help
+python main.py process --help
+python main.py cleanup --help
 ```
 
 ### Legacy Interface (Still Supported - Phase 1 Improved)

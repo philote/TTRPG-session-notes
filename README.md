@@ -20,14 +20,14 @@ pip install -r requirements.txt
 
 ### Try It Now
 ```bash
-# Quick demo with existing transcripts (works immediately)
-python cli/main.py process TEST-DATA/transcripts-test-data/ --output-dir my_first_demo --cleanup-only
+# With your own audio files (recommended)
+python main.py process your_session_audio/ --output-dir session_01 --all-steps
 
-# Full workflow with audio files (the real example you'll use)
-python cli/main.py process TEST-DATA/audio-tests/session-zero-cuts/ --output-dir my_first_session --all-steps
+# Or with existing transcript files
+python main.py process your_transcripts/ --output-dir session_01 --cleanup-only
 
 # View your results
-ls my_first_session/
+ls session_01/
 # Session_complete_Final_COMPLETE.txt  ← Your clean transcript
 # *.csv files                          ← Processed data files
 ```
@@ -47,26 +47,26 @@ ls my_first_session/
 ### Complete Automation (Recommended)
 ```bash
 # Everything: transcribe → clean → organize
-python cli/main.py process session_audio/ --output-dir campaign_session_01 --all-steps
+python main.py process session_audio/ --output-dir campaign_session_01 --all-steps
 
 # Customize session info
-python cli/main.py process audio/ --output-dir session --session-name "Curse of Strahd" --session-part "Episode_3"
+python main.py process audio/ --output-dir session --session-name "Curse of Strahd" --session-part "Episode_3"
 ```
 
 ### Individual Operations
 ```bash
 # Just transcribe audio files
-python cli/main.py transcribe audio.flac --output-dir transcripts
+python main.py transcribe audio.flac --output-dir transcripts
 
 # Just clean existing transcripts  
-python cli/main.py cleanup --base-path transcripts --session-name "My Campaign"
+python main.py cleanup --base-path transcripts --session-name "My Campaign"
 
 # Just apply text corrections
-python cli/main.py replace --input transcript.txt --replacements corrections.json
+python main.py replace --input transcript.txt --replacements corrections.json
 
 # Get help for any command
-python cli/main.py --help
-python cli/main.py process --help
+python main.py --help
+python main.py process --help
 ```
 
 ## Common Workflow Patterns
@@ -75,13 +75,13 @@ python cli/main.py process --help
 ```bash
 # 1. Record with Craig Discord bot → download audio files
 # 2. One command processing
-python cli/main.py process session_audio/ --output-dir "session_12" --all-steps --session-name "Waterdeep" --session-part "episode_12"
+python main.py process session_audio/ --output-dir "session_12" --all-steps --session-name "Waterdeep" --session-part "episode_12"
 
 # 3. Create name corrections (optional but recommended)
 echo '{"Voldemort": ["voldamort", "boltimore"], "Hermione": ["hermione", "her mine"]}' > session_12/merge_replacements.json
 
 # 4. Re-run to apply corrections
-python cli/main.py process session_12 --output-dir session_12 --cleanup-only
+python main.py process session_12 --output-dir session_12 --cleanup-only
 
 # 5. Use transcript with AI prompts from AI_Prompts/ folder
 ```
@@ -89,7 +89,7 @@ python cli/main.py process session_12 --output-dir session_12 --cleanup-only
 ### One-shot Adventure Processing  
 ```bash
 # Quick processing for single session
-python cli/main.py process oneshot_audio/ --output-dir "halloween_oneshot" --all-steps
+python main.py process oneshot_audio/ --output-dir "halloween_oneshot" --all-steps
 
 # Generate story summary using AI_Prompts/dm_simple_story_summarizer.txt
 ```
@@ -98,7 +98,7 @@ python cli/main.py process oneshot_audio/ --output-dir "halloween_oneshot" --all
 ```bash
 # Process multiple old sessions
 for session in session_*_audio/; do
-    python cli/main.py process "$session" --output-dir "${session%_audio}" --all-steps
+    python main.py process "$session" --output-dir "${session%_audio}" --all-steps
 done
 ```
 
@@ -114,7 +114,7 @@ The system includes specialized AI prompts for campaign management:
 - **Encounter Documentation**: Structured encounter breakdowns
 
 ### Usage with ChatGPT/Claude
-1. Process your session: `python cli/main.py process audio/ --output-dir session --all-steps`
+1. Process your session: `python main.py process audio/ --output-dir session --all-steps`
 2. Copy content from `Session_*_Final_COMPLETE.txt`
 3. Use with prompts from `AI_Prompts/` directory
 4. For longer transcripts, Claude is recommended (larger context window)
@@ -159,10 +159,10 @@ export TTRPG_WHISPER_MODEL="turbo"
 ### Command Line Overrides
 ```bash
 # Skip specific processing steps
-python cli/main.py cleanup --skip-duplicates --skip-merge
+python main.py cleanup --skip-duplicates --skip-merge
 
 # Use different Whisper model
-python cli/main.py transcribe audio.flac --model large-v2 --no-fp16
+python main.py transcribe audio.flac --model large-v2 --no-fp16
 ```
 
 ## Testing Your Setup
@@ -172,14 +172,18 @@ python cli/main.py transcribe audio.flac --model large-v2 --no-fp16
 # Verify installation
 pytest tests/ -v
 
-# Test with sample transcript data
-python cli/main.py process TEST-DATA/transcripts-test-data/ --output-dir test_output --cleanup-only
+# Test the CLI interface
+python main.py --help
+python main.py process --help
 ```
 
 ### Integration Test
 ```bash
-# Process real transcript data
-python cli/main.py cleanup --base-path TEST-DATA/transcripts-test-data --session-name "test_session"
+# Test with your own data
+python main.py process your_audio_files/ --output-dir test_output --all-steps
+
+# Or test cleanup on existing transcripts
+python main.py cleanup --base-path your_transcripts/ --session-name "test_session"
 ```
 
 ## Common Issues & Solutions
@@ -192,25 +196,25 @@ pip install -r requirements.txt
 ### Audio Transcription Issues
 ```bash
 # Use CPU-optimized model
-python cli/main.py transcribe audio.flac --model base --no-fp16
+python main.py transcribe audio.flac --model base --no-fp16
 
 # For low-quality audio
-python cli/main.py transcribe audio.flac --model large-v2
+python main.py transcribe audio.flac --model large-v2
 ```
 
 ### Configuration Problems
 ```bash
 # Verify your setup
-python cli/main.py --help
+python main.py --help
 
 # Check specific command options
-python cli/main.py cleanup --help
+python main.py cleanup --help
 ```
 
 ### Path Issues
 ```bash
 # Always use absolute paths for reliability
-python cli/main.py process /full/path/to/audio/ --output-dir /full/path/to/output/
+python main.py process /full/path/to/audio/ --output-dir /full/path/to/output/
 ```
 
 ### Text Replacement Not Working
@@ -219,7 +223,7 @@ python cli/main.py process /full/path/to/audio/ --output-dir /full/path/to/outpu
 echo '{"CorrectName": ["mishear1", "mishear2"]}' > merge_replacements.json
 
 # Check file location (should be in output directory)
-python cli/main.py replace --replacements /full/path/to/merge_replacements.json
+python main.py replace --replacements /full/path/to/merge_replacements.json
 ```
 
 ## Complete Command Reference
@@ -227,14 +231,14 @@ python cli/main.py replace --replacements /full/path/to/merge_replacements.json
 ### Main Commands
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `process` | Full automation pipeline | `python cli/main.py process audio/ --output-dir session --all-steps` |
-| `transcribe` | Audio to text conversion | `python cli/main.py transcribe audio.flac --output-dir transcripts` |
-| `cleanup` | Process transcript files | `python cli/main.py cleanup --base-path transcripts` |
-| `replace` | Apply text corrections | `python cli/main.py replace --input transcript.txt` |
+| `process` | Full automation pipeline | `python main.py process audio/ --output-dir session --all-steps` |
+| `transcribe` | Audio to text conversion | `python main.py transcribe audio.flac --output-dir transcripts` |
+| `cleanup` | Process transcript files | `python main.py cleanup --base-path transcripts` |
+| `replace` | Apply text corrections | `python main.py replace --input transcript.txt` |
 
 ### Process Command Options
 ```bash
-python cli/main.py process INPUT_PATH --output-dir OUTPUT_DIR [options]
+python main.py process INPUT_PATH --output-dir OUTPUT_DIR [options]
 
 Options:
   --all-steps              Run transcribe → cleanup → replace
@@ -248,7 +252,7 @@ Options:
 
 ### Transcribe Command Options
 ```bash
-python cli/main.py transcribe INPUT_PATH --output-dir OUTPUT_DIR [options]
+python main.py transcribe INPUT_PATH --output-dir OUTPUT_DIR [options]
 
 Options:
   --model MODEL           Whisper model: tiny, base, small, medium, large, large-v2, turbo
@@ -259,7 +263,7 @@ Options:
 
 ### Cleanup Command Options
 ```bash
-python cli/main.py cleanup --base-path PATH [options]
+python main.py cleanup --base-path PATH [options]
 
 Options:
   --session-name NAME     Override session name
@@ -304,13 +308,13 @@ Options:
 ### Directory Structure
 ```
 project/
-├── cli/                     # Unified command interface
-├── transcribe/              # Audio transcription (Whisper)
-├── transcript_cleanup/      # Text processing and cleanup
+├── main.py                 # Main CLI entry point
+├── cli/                    # Command implementations
+├── transcribe/             # Audio transcription (Whisper)
+├── transcript_cleanup/     # Text processing and cleanup
 ├── shared_utils/           # Common configuration and utilities
 ├── AI_Prompts/             # Campaign management templates
-├── tests/                  # Test suite
-└── TEST-DATA/              # Sample files for testing
+└── tests/                  # Test suite
 ```
 
 ### Technology Stack

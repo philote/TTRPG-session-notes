@@ -192,14 +192,14 @@ Create a new Python script `whisper_transcribe.py` in the `transcript_cleanup/` 
 ### ✅ Phase 2: KISS-Focused Improvements (COMPLETED)
 
 **Implementation Results:**
-- ✅ **Unified CLI Interface**: Created `cli/main.py` with subcommands (transcribe, cleanup, replace, process)
+- ✅ **Unified CLI Interface**: Created `main.py` with subcommands (transcribe, cleanup, replace, process)
 - ✅ **Pipeline Automation**: `ttrpg process` command chains operations automatically
 - ✅ **Configurable Cleanup Steps**: Simple enable/disable flags in config (not over-engineered plugins)
 - ✅ **Enhanced User Experience**: Better help text, error handling, and progress tracking
 - ✅ **KISS Architecture**: Avoided plugin complexity, used simple function lists instead
 
 **New Phase 2 Components:**
-- ✅ `cli/main.py` - Main CLI entry point with comprehensive help
+- ✅ `main.py` - Main CLI entry point with comprehensive help
 - ✅ `cli/commands/` - Individual command modules (transcribe_cmd, cleanup_cmd, replace_cmd, process_cmd)
 - ✅ `transcript_cleanup/cleanup_steps.py` - Simple configurable cleanup pipeline
 - ✅ Enhanced `shared_utils/config.py` - Added cleanup step enable/disable flags
