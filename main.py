@@ -9,8 +9,8 @@ import sys
 from pathlib import Path
 
 from shared_utils.logging_config import setup_logging, get_logger
-from shared_utils.config import load_config
-from cli.commands import transcribe_cmd, cleanup_cmd, replace_cmd, process_cmd
+from shared_utils.config import SharedConfig
+from cli.commands import transcribe_cmd, cleanup_cmd, replace_cmd, process_cmd, generate_cmd
 
 # Command registry for dynamic dispatch
 COMMANDS = {
@@ -18,6 +18,7 @@ COMMANDS = {
     'cleanup': cleanup_cmd,
     'replace': replace_cmd,
     'process': process_cmd,
+    'generate': generate_cmd,
 }
 
 
@@ -33,6 +34,7 @@ Examples:
   ttrpg cleanup --base-path transcripts --session-name my_session
   ttrpg replace --input transcript.txt --replacements corrections.json
   ttrpg process audio_files/ --output-dir session_01 --all-steps
+  ttrpg generate transcript.txt --output-dir campaign_docs --all-types
         """
     )
     
@@ -81,7 +83,7 @@ def main():
     config = None
     if args.config:
         try:
-            config = load_config(args.config)
+            config = SharedConfig(args.config)
             logger.debug(f"Loaded configuration from {args.config}")
         except Exception as e:
             logger.warning(f"Failed to load config {args.config}: {e}")

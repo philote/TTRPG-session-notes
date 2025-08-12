@@ -52,6 +52,12 @@ def add_parser(subparsers):
         help='Only perform cleanup step (assumes TSV files exist)'
     )
     
+    parser.add_argument(
+        '--generate-campaign',
+        action='store_true',
+        help='Generate AI campaign documents after cleanup (requires cleaned transcript)'
+    )
+    
     # Transcription options
     parser.add_argument(
         '--model',
@@ -75,6 +81,20 @@ def add_parser(subparsers):
     parser.add_argument(
         '--session-part',
         help='Part/episode identifier for the session'
+    )
+    
+    # AI Campaign Generation options (when --generate-campaign is used)
+    parser.add_argument(
+        '--ai-provider',
+        choices=['anthropic', 'openai', 'google'],
+        help='AI provider for campaign generation'
+    )
+    
+    parser.add_argument(
+        '--campaign-types',
+        nargs='+',
+        choices=['NPC', 'LOCATION', 'ITEM', 'FACTION', 'ENCOUNTER', 'STORY'],
+        help='Types of campaign documents to generate'
     )
     
     # Configuration

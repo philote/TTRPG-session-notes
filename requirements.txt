@@ -3,6 +3,13 @@ pandas>=2.0.0
 colorama>=0.4.6
 openai-whisper>=20231117
 
+# AI Campaign Generation dependencies
+litellm>=1.0.0
+python-frontmatter>=1.0.0
+python-dotenv>=1.0.0
+fuzzywuzzy>=0.18.0
+python-Levenshtein>=0.20.0
+
 # Testing dependencies
 pytest>=7.0.0
 
