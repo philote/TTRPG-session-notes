@@ -2,8 +2,9 @@
 
 Turn your Discord TTRPG sessions into organized campaign notes automatically.
 
-**This project was inspired by**: [Automating D&D Notetaking with AI](https://medium.com/@brandonharris_12357/automating-d-d-notetaking-with-ai-89ecd36e8b0e)
-**Original code** inside the transcript_cleanup folder from [dnd-transcript-cleanup](https://github.com/VCDragoon/dnd-transcript-cleanup)
+> [!NOTE]
+> **This project was inspired by**: [Automating D&D Notetaking with AI](https://medium.com/@brandonharris_12357/automating-d-d-notetaking-with-ai-89ecd36e8b0e)
+> **Original code** inside the transcript_cleanup folder from [dnd-transcript-cleanup](https://github.com/VCDragoon/dnd-transcript-cleanup)
 
 ## What You Get
 
