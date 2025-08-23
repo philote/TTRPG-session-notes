@@ -23,13 +23,13 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from shared_utils.config import get_shared_config
 from shared_utils.logging_config import setup_logging, get_logger
 from shared_utils.text_processing import (
-    load_replacements_file,
+    get_text_replacements,
     apply_text_replacements,
     log_replacement_statistics
 )
 from shared_utils.file_operations import get_file_stats
 
-def process_text_file(input_file: Path, replacements_file: Path, output_file: Path, logger):
+def process_text_file(input_file: Path, output_file: Path, logger, config=None):
     """Process a text file with replacements."""
     
     # Validate input files
@@ -37,17 +37,12 @@ def process_text_file(input_file: Path, replacements_file: Path, output_file: Pa
         logger.error(f"Input file not found: {input_file}")
         return False
     
-    if not replacements_file.exists():
-        logger.error(f"Replacements file not found: {replacements_file}")
-        return False
-    
     # Get input file stats
     input_stats = get_file_stats(input_file)
     logger.info(f"Input file: {input_file.name} ({input_stats['size_mb']} MB)")
     
-    # Load replacements
-    logger.info(f"Loading replacements from: {replacements_file.name}")
-    replacements = load_replacements_file(str(replacements_file))
+    # Load replacements from config
+    replacements = get_text_replacements(config)
     
     if not replacements:
         logger.warning("No replacements loaded - nothing to do")
@@ -117,7 +112,6 @@ def main():
     """Main processing function."""
     parser = argparse.ArgumentParser(description="TTRPG JSON Text Replace - Phase 1 Improved")
     parser.add_argument('--input', type=Path, help='Input text file to process')
-    parser.add_argument('--replacements', type=Path, help='JSON file with replacement mappings')
     parser.add_argument('--output', type=Path, help='Output file for processed text')
     parser.add_argument('--config', help='Path to configuration file')
     parser.add_argument('--log-level', default='INFO', 
@@ -159,13 +153,6 @@ def main():
                 logger.info("Please specify --input or place a transcript file in the base path")
                 return False
         
-        if args.replacements:
-            replacements_file = args.replacements
-        else:
-            # Use default from config
-            replacements_file = base_path / config.cleanup['replacements_file']
-            logger.info(f"Using default replacements file: {replacements_file.name}")
-        
         if args.output:
             output_file = args.output
         else:
@@ -174,14 +161,13 @@ def main():
             logger.info(f"Auto-generated output file: {output_file.name}")
         
         # Process the file
-        success = process_text_file(input_file, replacements_file, output_file, logger)
+        success = process_text_file(input_file, output_file, logger, config)
         
         if success:
             logger.info("Text replacement completed successfully!")
             logger.info("=" * 60)
             logger.info("Files processed:")
             logger.info(f"  Input: {input_file}")
-            logger.info(f"  Replacements: {replacements_file}")
             logger.info(f"  Output: {output_file}")
         else:
             logger.error("Text replacement failed!")

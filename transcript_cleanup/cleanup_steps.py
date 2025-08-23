@@ -1,6 +1,5 @@
 """
 Simple cleanup step configuration for TTRPG transcript processing.
-Maintains KISS principles while allowing easy customization.
 """
 
 from typing import Dict, List, Tuple, Any

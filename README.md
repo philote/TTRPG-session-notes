@@ -82,7 +82,7 @@ python main.py process your_session_audio/ --output-dir session_01 --all-steps -
 python main.py process your_transcripts/ --output-dir session_01 --cleanup-only
 
 # Standalone AI generation from existing transcripts (recommended for testing)
-python main.py generate session_01/Session_*_Final_COMPLETE.txt --output-dir campaign_docs --prompts NPC_template LOCATIONS_template
+python main.py generate session_01/Session_*_Final_COMPLETE.txt --output-dir campaign_docs --prompts dm_base_helper LOCATIONS_template NPC_template PC_metadata PC_tracker
 
 # View your results
 ls session_01/
@@ -97,7 +97,7 @@ ls campaign_docs/  # AI-generated campaign documents
 ### What Happens
 1. **Audio → Text**: Whisper AI transcribes each player's audio separately
 2. **Clean & Organize**: Remove duplicates, fix timing, merge speakers chronologically  
-3. **Smart Corrections**: Apply name mappings (fix "Gandolf" → "Gandalf")
+3. **Smart Corrections**: Automatic text corrections for 40+ common RPG terms (fix "stilmiss choir" → "Stillness Choir", "wizardry" → "wizardry", etc.)
 4. **Campaign Notes**: Use AI prompts to generate NPC profiles, location docs, story summaries
 
 ### Real Example Output
@@ -123,8 +123,7 @@ python main.py transcribe audio.flac --output-dir transcripts
 # Just clean existing transcripts  
 python main.py cleanup --base-path transcripts --session-name "My Campaign"
 
-# Just apply text corrections
-python main.py replace --input transcript.txt --replacements corrections.json
+# Text corrections are now automatic (use --config for custom terms)
 
 # Just generate AI campaign documents
 python main.py generate transcript.txt --output-dir campaign --prompts NPC_template LOCATIONS_template
@@ -139,17 +138,29 @@ python main.py generate --help
 ### Weekly Campaign Sessions
 ```bash
 # 1. Record with Craig Discord bot → download audio files
-# 2. One command processing
+# 2. One command processing (includes automatic text corrections)
 python main.py process session_audio/ --output-dir "session_12" --all-steps --session-name "Waterdeep" --session-part "episode_12"
 
-# 3. Create name corrections (optional but recommended)
-echo '{"Voldemort": ["voldamort", "boltimore"], "Hermione": ["hermione", "her mine"]}' > session_12/merge_replacements.json
-
-# 4. Re-run to apply corrections
-python main.py process session_12 --output-dir session_12 --cleanup-only
-
-# 5. Use transcript with AI prompts from AI_Prompts/ folder
+# 3. Done! Text corrections are automatic (40+ built-in RPG term corrections)
+# 4. Use transcript with AI prompts from AI_Prompts/ folder
 ```
+
+### Custom Text Replacements (Advanced)
+Want to add your own campaign-specific corrections? 
+
+```bash
+# 1. Copy the example config
+cp shared_utils/example_config.py my_config.py
+
+# 2. Edit my_config.py and add your terms to DEFAULT_TEXT_REPLACEMENTS:
+# "Your BBEG Name": ["bbeg mishear1", "bbeg mishear2"],
+# "Your Important NPC": ["npc mishear1", "npc mishear2"],
+
+# 3. Use your custom config
+python main.py process audio/ --output-dir session_01 --all-steps --config my_config.py
+```
+
+**Built-in corrections include**: Stillness Choir, Ember Thieves, wizard, rogue, perception, armor, crossbow, and 30+ more RPG terms.
 
 ### One-shot Adventure Processing  
 ```bash

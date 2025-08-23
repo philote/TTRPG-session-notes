@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from shared_utils.config import get_shared_config
 from shared_utils.logging_config import setup_logging, get_logger
 from shared_utils.text_processing import (
-    load_replacements_file,
+    get_text_replacements,
     apply_text_replacements,
     clean_transcript_dataframe,
     split_text_with_overlap
@@ -57,10 +57,21 @@ def process_tsv_file(file_path: Path, config, logger):
     
     # Determine speaker name from filename
     speaker_name = 'Unknown'
-    for key, name in config.name_mappings.items():
-        if key in str(file_path):
-            speaker_name = name
-            break
+    if hasattr(config, 'name_mappings') and config.name_mappings:
+        for key, name in config.name_mappings.items():
+            if key in str(file_path):
+                speaker_name = name
+                break
+    
+    # If no mapping found, extract username from filename as fallback
+    if speaker_name == 'Unknown':
+        # Extract username from filename (e.g., "1-username.tsv" -> "username")
+        filename = file_path.stem  # Remove extension
+        parts = filename.split('-')
+        if len(parts) >= 2:
+            # Skip the first part (usually a number) and join the rest
+            username = '-'.join(parts[1:])
+            speaker_name = f"Player: {username}"
     
     # Add speaker name column
     cleaned_df['name'] = speaker_name
@@ -121,13 +132,12 @@ def apply_text_replacements_to_dataframe(df, config, logger):
     """Apply text replacements to the dataframe."""
     logger.info("Applying text replacements...")
     
-    # Load replacements file
-    replacements_path = Path(config.cleanup['base_path']) / config.cleanup['replacements_file']
-    replacements = load_replacements_file(str(replacements_path))
+    # Load replacements from config
+    replacements = get_text_replacements(config)
     
     if not replacements:
         logger.info("No text replacements configured - transcript will not be modified")
-        logger.info(f"To add corrections, edit: {replacements_path.name}")
+        logger.info("To add corrections, update your configuration file")
         return df
     
     # Apply replacements to text column

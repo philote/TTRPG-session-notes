@@ -12,66 +12,31 @@ from typing import Dict, List, Tuple, Any, Optional
 import logging
 
 from .logging_config import get_logger
+from .config import SharedConfig
 
-def load_replacements_file(file_path: str, base_dir: Optional[str] = None) -> Dict[str, List[str]]:
-    """Load replacements from JSON file.
+def get_text_replacements(config: Optional[Any] = None) -> Dict[str, List[str]]:
+    """Get text replacements from configuration.
     
     Args:
-        file_path: Path to the JSON replacements file
-        base_dir: Base directory to resolve relative paths
+        config: Optional config object with text_replacements
     
     Returns:
         Dictionary mapping correct terms to lists of variants
     """
     logger = get_logger()
     
-    # Convert to Path object for easier handling
-    replacement_path = Path(file_path)
-    
-    # If relative path and base_dir provided, resolve from base_dir
-    if not replacement_path.is_absolute() and base_dir:
-        replacement_path = Path(base_dir) / replacement_path
-    
-    if not replacement_path.exists():
-        logger.info(f"Replacements file not found: {replacement_path}")
-        logger.info("Creating default replacements file with examples...")
-        
-        # Create default replacements file
-        default_replacements = {
-            "_comment": "Add your text corrections here. Format: 'CorrectName': ['mishear1', 'mishear2']",
-            "_examples": {
-                "Gandalf": ["gandolf", "gandulf", "gand off"],
-                "PlayerName": ["playername", "player name"],
-                "CharacterName": ["charactername", "character name"]
-            }
-        }
-        
-        try:
-            # Ensure parent directory exists
-            replacement_path.parent.mkdir(parents=True, exist_ok=True)
-            
-            # Write default file
-            with open(replacement_path, 'w', encoding='utf-8') as f:
-                json.dump(default_replacements, f, indent=2)
-            
-            logger.info(f"Created default replacements file: {replacement_path}")
-            logger.info("Edit this file to add your own text corrections")
-            
-            # Return empty dict for now since examples are prefixed with _
+    # Return replacements from config
+    if config and hasattr(config, 'text_replacements') and config.text_replacements:
+        logger.info("Using text replacements from configuration")
+        return config.text_replacements
+    else:
+        logger.info("Using default text replacements for common RPG terms")
+        # Handle case where SharedConfig.DEFAULT_TEXT_REPLACEMENTS might be missing/empty
+        default_replacements = getattr(SharedConfig, 'DEFAULT_TEXT_REPLACEMENTS', {})
+        if not default_replacements:
+            logger.info("No default text replacements available")
             return {}
-            
-        except Exception as e:
-            logger.warning(f"Could not create default replacements file: {e}")
-            return {}
-    
-    try:
-        with open(replacement_path, 'r', encoding='utf-8') as file:
-            replacements = json.load(file)
-        logger.info(f"Loaded {len(replacements)} replacement mappings from {replacement_path}")
-        return replacements
-    except Exception as e:
-        logger.error(f"Error loading replacements file {replacement_path}: {e}")
-        return {}
+        return default_replacements
 
 def apply_text_replacements(text: str, 
                           replacement_map: Dict[str, List[str]], 
@@ -91,7 +56,21 @@ def apply_text_replacements(text: str,
     logger = get_logger()
     replacement_counts = defaultdict(lambda: defaultdict(int))
     
+    # Handle empty replacement map
+    if not replacement_map:
+        logger.debug("No replacements to apply")
+        return text, dict(replacement_counts)
+    
     for correct_term, variants in replacement_map.items():
+        # Skip underscore-prefixed keys (comments, examples, etc.)
+        if correct_term.startswith('_'):
+            continue
+            
+        # Validate that variants is a list
+        if not isinstance(variants, list):
+            logger.warning(f"Skipping invalid replacement entry '{correct_term}': variants must be a list")
+            continue
+            
         for variant in variants:
             # Count occurrences before replacement
             flags = re.IGNORECASE if case_insensitive else 0

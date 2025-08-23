@@ -40,7 +40,7 @@ class TestSharedConfig(unittest.TestCase):
         
         # Test cleanup defaults
         self.assertEqual(config.cleanup["session_name"], "sessions")
-        self.assertEqual(config.cleanup["part"], "zero")
+        self.assertEqual(config.cleanup["part"], "test")
         self.assertTrue(config.cleanup["remove_silence_gibberish"])
         
         # Test name mappings

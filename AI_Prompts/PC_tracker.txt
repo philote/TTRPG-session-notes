@@ -10,7 +10,12 @@ The SUBJECT is the Player Character named [SUBJECT].  [SUBJECT] = Whoever is nam
 ========================
 
 IMPORTANT CHARACTERS:
-{{List Characters and the DM}}
+Joe (Blue) is the GM & The Entropy Shepard (The Overlord)
+Eric (Turquoise) is Kurg "Breaktooth" Randalar (The Orc)
+John (Purple) is Nyx (The Harbinger)
+Booker (Yellow) is Ale-ore Bridge (The Dwarf)
+Alf (Green) is Ulion the Sleepbringer (The Elf)
+Liam (Red) is Mortimer Montgomery (The Squire)
 
 =================
 
