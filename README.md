@@ -17,20 +17,39 @@ Transform hours of audio recordings into comprehensive campaign documentation:
 
 ## Get Started in 5 Minutes
 
-### Prerequisites 
-You'll need **Python 3.10 or newer**. Check your version:
+### Prerequisites
+You'll need **Python 3.10 through 3.13** (Python 3.14+ support coming soon). Check your version:
 ```bash
 python3 --version
 ```
 
-If you have Python 3.9 or older, [upgrade to Python 3.12+](https://www.python.org/downloads/) for the best experience with AI features.
+**Python 3.12 is recommended** for the best experience with AI features. If you have Python 3.9 or older, [upgrade to Python 3.12](https://www.python.org/downloads/).
+
+> [!NOTE]
+> Python 3.14 was just released and the `numba` dependency (required by Whisper) doesn't support it yet. If you have Python 3.14, use Python 3.12 instead (see instructions below).
+
+On a Mac, install [Homebrew](https://brew.sh/) and install Python with `brew install python`
+
+#### Make sure Homebrew's bin directory is in your PATH
+For Apple Silicon
+`export PATH="/opt/homebrew/bin:$PATH"`
+For Intel Mac
+`export PATH="/usr/local/bin:$PATH"`
+Then run source `~/.zshrc` to reload.
+
+#### Add an alias to your shell config file:
+For zsh
+`echo 'alias python=python3' >> ~/.zshrc`
+`echo 'alias pip=pip3' >> ~/.zshrc`
+`source ~/.zshrc`
 
 ### Recommended Setup (Virtual Environment)
 Using a virtual environment keeps this project's dependencies separate from your system Python:
 
 ```bash
 # 1. Create a virtual environment in the project directory
-python3 -m venv venv
+# If you have multiple Python versions, use python3.12 explicitly:
+python3.12 -m venv venv
 
 # 2. Activate the virtual environment
 # On macOS/Linux:
@@ -40,7 +59,10 @@ source venv/bin/activate
 
 # You should see (venv) in your terminal prompt now
 
-# 3. Install dependencies
+# 3. Verify Python version inside venv
+python --version  # Should show python3.12
+
+# 4. Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -516,6 +538,27 @@ python main.py cleanup --base-path your_transcripts/ --session-name "test_sessio
 ```bash
 pip install -r requirements.txt
 ```
+
+### Python Version Issues
+If you get an error about `numba` not supporting your Python version:
+```bash
+# Check which Python versions you have installed
+python3 --version
+python3.12 --version
+python3.13 --version
+
+# Error: "Cannot install on Python version 3.14.0"
+# Solution: Use Python 3.12 or 3.13 instead
+rm -rf venv
+python3.12 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Verify you're using the correct version
+python --version  # Should show 3.10-3.13
+```
+
+**Note**: Python 3.14 support is coming soon but `numba` (required by Whisper) doesn't support it yet. Use Python 3.12 for the best experience.
 
 ### Audio Transcription Issues
 ```bash
