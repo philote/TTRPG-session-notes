@@ -4,12 +4,20 @@ TTRPG JSON Text Replace Script - Phase 1 Improved Version
 
 This is the modernized version of json_text_replace.py that uses:
 - Shared configuration system
-- Professional logging instead of colorama prints  
+- Professional logging instead of colorama prints
 - Shared text processing utilities
 - Better error handling and file operations
 
 Usage:
-    python json_text_replace_v2.py [--input INPUT_FILE] [--replacements REPLACEMENTS_FILE] [--output OUTPUT_FILE]
+    python json_text_replace_v2.py --input INPUT_FILE [--output OUTPUT_FILE] [--replacements REPLACEMENTS_FILE] [--config CONFIG_FILE]
+
+Arguments:
+    --input: Text file to process (required or auto-detected)
+    --output: Output file path (optional, defaults to INPUT_UPDATED.txt)
+    --replacements: JSON file with replacement mappings (optional)
+    --config: Configuration file for settings and replacements (optional)
+
+Note: If both --replacements and --config are provided, --replacements takes priority.
 """
 
 import argparse
@@ -29,21 +37,35 @@ from shared_utils.text_processing import (
 )
 from shared_utils.file_operations import get_file_stats
 
-def process_text_file(input_file: Path, output_file: Path, logger, config=None):
+def process_text_file(input_file: Path, output_file: Path, logger, config=None, replacements_file=None):
     """Process a text file with replacements."""
-    
+
     # Validate input files
     if not input_file.exists():
         logger.error(f"Input file not found: {input_file}")
         return False
-    
+
     # Get input file stats
     input_stats = get_file_stats(input_file)
     logger.info(f"Input file: {input_file.name} ({input_stats['size_mb']} MB)")
-    
-    # Load replacements from config
-    replacements = get_text_replacements(config)
-    
+
+    # Load replacements - prioritize explicit replacements file
+    if replacements_file:
+        import json
+        logger.info(f"Loading replacements from: {replacements_file}")
+        try:
+            with open(replacements_file, 'r', encoding='utf-8') as f:
+                replacements = json.load(f)
+        except FileNotFoundError:
+            logger.warning(f"Replacements file not found: {replacements_file}")
+            replacements = {}
+        except json.JSONDecodeError as e:
+            logger.error(f"Invalid JSON in replacements file: {e}")
+            replacements = {}
+    else:
+        # Load replacements from config
+        replacements = get_text_replacements(config)
+
     if not replacements:
         logger.warning("No replacements loaded - nothing to do")
         return False
@@ -113,11 +135,12 @@ def main():
     parser = argparse.ArgumentParser(description="TTRPG JSON Text Replace - Phase 1 Improved")
     parser.add_argument('--input', type=Path, help='Input text file to process')
     parser.add_argument('--output', type=Path, help='Output file for processed text')
+    parser.add_argument('--replacements', type=Path, help='JSON file with replacement mappings')
     parser.add_argument('--config', help='Path to configuration file')
-    parser.add_argument('--log-level', default='INFO', 
+    parser.add_argument('--log-level', default='INFO',
                        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'],
                        help='Logging level')
-    
+
     args = parser.parse_args()
     
     # Setup logging
@@ -161,7 +184,7 @@ def main():
             logger.info(f"Auto-generated output file: {output_file.name}")
         
         # Process the file
-        success = process_text_file(input_file, output_file, logger, config)
+        success = process_text_file(input_file, output_file, logger, config, replacements_file=args.replacements)
         
         if success:
             logger.info("Text replacement completed successfully!")

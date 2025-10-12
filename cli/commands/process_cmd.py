@@ -193,12 +193,12 @@ def run(args, logger):
         else:
             input_file = complete_files[0]
             
-            # Create replace args (construct full path to replacements file)
+            # Create replace args (use replacements file if it exists)
             replacements_file = output_dir / 'merge_replacements.json'
             replace_args = type('Args', (), {
                 'input': str(input_file),
                 'output': None,  # Will auto-generate
-                'replacements': str(replacements_file)
+                'replacements': str(replacements_file) if replacements_file.exists() else None
             })()
             
             result = replace_cmd.run(replace_args, logger)

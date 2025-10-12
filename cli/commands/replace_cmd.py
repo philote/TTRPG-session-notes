@@ -33,8 +33,8 @@ def add_parser(subparsers):
     
     parser.add_argument(
         '--replacements',
-        default='merge_replacements.json',
-        help='JSON file with replacement mappings (default: merge_replacements.json)'
+        default=None,
+        help='JSON file with replacement mappings (optional, uses config defaults if not specified)'
     )
     
     parser.add_argument(

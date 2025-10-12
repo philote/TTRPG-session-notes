@@ -28,6 +28,31 @@ python3 --version
 > [!NOTE]
 > Python 3.14 was just released and the `numba` dependency (required by Whisper) doesn't support it yet. If you have Python 3.14, use Python 3.12 instead (see instructions below).
 
+#### FFmpeg (Required for Audio Transcription)
+
+**FFmpeg is required** to transcribe audio files. Install it before running transcription:
+
+**macOS** (using Homebrew):
+```bash
+brew install ffmpeg
+```
+
+**Linux** (Ubuntu/Debian):
+```bash
+sudo apt-get update
+sudo apt-get install ffmpeg
+```
+
+**Windows**:
+Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to your PATH.
+
+**Verify installation**:
+```bash
+ffmpeg -version
+```
+
+If you get "command not found", ffmpeg is not installed or not in your PATH.
+
 On a Mac, install [Homebrew](https://brew.sh/) and install Python with `brew install python`
 
 #### Make sure Homebrew's bin directory is in your PATH
@@ -561,6 +586,18 @@ python --version  # Should show 3.10-3.13
 **Note**: Python 3.14 support is coming soon but `numba` (required by Whisper) doesn't support it yet. Use Python 3.12 for the best experience.
 
 ### Audio Transcription Issues
+
+**Error: `[Errno 2] No such file or directory: 'ffmpeg'`**
+```bash
+# FFmpeg is required for audio transcription. Install it first:
+brew install ffmpeg  # macOS
+# or: sudo apt-get install ffmpeg  # Linux
+
+# Verify installation
+ffmpeg -version
+```
+
+**Other transcription issues:**
 ```bash
 # Use CPU-optimized model
 python main.py transcribe audio.flac --model base --no-fp16
