@@ -83,7 +83,7 @@ python json_text_replace_v2.py --config my_config.json --log-level INFO
     "replacements_file": "merge_replacements.json"
   },
   "name_mappings": {
-    "ephson": "Player: Joe (Character: The Shepard)",
+    "ephson": "Player: Joe (Character: The Shepherd)",
     "thebookersmith": "Player: Booker (Character: Ale-ore)",
     "turtleherder": "Player: Liam (Character: Mortimer)"
   },
@@ -121,7 +121,7 @@ Place `merge_replacements.json` in your session directory:
 {
   "CorrectName": ["mishear1", "mishear2", "variant3"],
   "Gandalf": ["gandolf", "gandulf", "gandif"],
-  "Shepard": ["shepard", "shepherd", "sheppard"],
+  "Shepherd": ["shepard", "shepherd", "sheppard"],
   "PlayerName": ["playername", "player name"]
 }
 ```
